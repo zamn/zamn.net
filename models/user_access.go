@@ -1,18 +1,32 @@
 package blog
 
-type Admin struct{}
-type Editor struct{}
-type StandardUser struct{}
+import "time"
+
+type Admin struct {
+	User *User
+}
+type Editor struct {
+	User *User
+}
+type StandardUser struct {
+	User *User
+}
 
 type Access interface {
 	CreatePost(title string, body string) (*Post, error)
+	UpdatePost(*Post) error
 	DeletePost(*Post) error
 	ViewPost(*Post) error
 	String() string
 }
 
 func (a Admin) CreatePost(title string, body string) (*Post, error) {
-	return nil, nil
+	// TODO: Implement mongodb
+	return &Post{a.User, time.Now(), title, body, 0}, nil
+}
+
+func (a Admin) UpdatePost(*Post) error {
+	return nil
 }
 
 func (a Admin) DeletePost(p *Post) error {
